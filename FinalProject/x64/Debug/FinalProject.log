@@ -1,0 +1,11 @@
+﻿  glad.c
+  Source.cpp
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\shader.h(99,55): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(254,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(478,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(479,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(483,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(484,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(485,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(486,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  FinalProject.vcxproj -> C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\x64\Debug\FinalProject.exe
