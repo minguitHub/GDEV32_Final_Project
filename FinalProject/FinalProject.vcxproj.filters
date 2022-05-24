@@ -34,12 +34,18 @@
     <None Include="source.fsh">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="skybox.fsh">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shadowMapper.vsh">
       <Filter>Source Files</Filter>
     </FxCompile>
     <FxCompile Include="source.vsh">
+      <Filter>Source Files</Filter>
+    </FxCompile>
+    <FxCompile Include="skybox.vsh">
       <Filter>Source Files</Filter>
     </FxCompile>
   </ItemGroup>

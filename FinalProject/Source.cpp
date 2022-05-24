@@ -84,6 +84,7 @@ int main()
 	// creating shader program
 	Shader ourShader("source.vsh", "source.fsh");
 	Shader shadowShader("shadowMapper.vsh", "shadowMapper.fsh");
+	Shader skyboxShader("skybox.vsh", "skybox.fsh");
 
 	Vertex cubeVertices[36];
 	// data points
@@ -245,11 +246,11 @@ int main()
 	glGenVertexArrays(1, &skyboxVAO); // creating vertex array object
 	glGenBuffers(1, &skyboxVBO); // creating vertex buffer object
 	glBindVertexArray(skyboxVAO); // VAO must be binded here before VBO
-	glBindBuffer(GL_ARRAY_BUFFER, skyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
 	// defining how OpenGL should interpret the data
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, x)); // position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0); // position
 	// unbind planeVBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -259,26 +260,23 @@ int main()
 
 	unsigned int skyboxTexture;
 	int skyboxImageWidth, skyboxImageHeight, nrChannels;
-	unsigned char* data;
 	
 	//std::vector<std::string> skyboxFaces
 	std::string skyboxFaces[6]
 	{
+		"right.jpg",
+		"left.jpg",
 		"top.jpg",
 		"bottom.jpg",
-		"left.jpg",
-		"right.jpg",
 		"front.jpg",
 		"back.jpg"
 	};
 
 	glGenTextures(1, &skyboxTexture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
-	std::cout << sizeof(skyboxFaces) / sizeof(*skyboxFaces) << std::endl;
 	for (unsigned int i = 0; i < (sizeof(skyboxFaces)/sizeof(*skyboxFaces)); i++)
 	{
-		const char* imageName = skyboxFaces[i].c_str();
-		data = stbi_load(imageName, &skyboxImageWidth, &skyboxImageHeight, &nrChannels, 0);
+		unsigned char* data = stbi_load(skyboxFaces[i].c_str(), &skyboxImageWidth, &skyboxImageHeight, &nrChannels, 0);
 		if (data)
 		{
 			glTexImage2D(
@@ -327,6 +325,10 @@ int main()
 		std::cout << "Error! Framebuffer not complete!" << std::endl;
 	}
 
+	// activate skybox shader
+	skyboxShader.use();
+	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skyboxTex"), 0);
+
 	// activate main shader
 	ourShader.use();
 
@@ -363,6 +365,27 @@ int main()
 	// The Rendering Loop
 	while (!glfwWindowShouldClose(window))
 	{
+		// activate skybox shader
+		glDepthMask(GL_FALSE);
+		skyboxShader.use();
+
+		// skybox uniform locations and drawing
+		int skyboxProjectionLoc = glGetUniformLocation(skyboxShader.ID, "skyboxProjection");
+		glm::mat4 skyboxProjection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
+		glUniformMatrix4fv(skyboxProjectionLoc, 1, GL_FALSE, glm::value_ptr(skyboxProjection));
+
+		int skyboxViewLoc = glGetUniformLocation(skyboxShader.ID, "skyboxView");
+		glm::mat4 skyboxView = glm::mat4(glm::mat3(glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp)));
+		//glm::mat4 skyboxView = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		glUniformMatrix4fv(skyboxViewLoc, 1, GL_FALSE, glm::value_ptr(skyboxView));
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
+		glBindVertexArray(skyboxVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		glDepthMask(GL_TRUE);
+		
 		// camera calculations
 		float currentFrame = glfwGetTime(); // movement speed calculations
 		deltaTime = currentFrame - lastFrame;
@@ -377,6 +400,9 @@ int main()
 		glClearColor(0.098f, 0.098f, 0.4392f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		
+		
+		
 		// activate shadow map shader
 		shadowShader.use();
 
@@ -471,7 +497,7 @@ int main()
 		int lightViewLocInMain = glGetUniformLocation(ourShader.ID, "lightView"); // for updating the lightView in main shader
 
 		// main transformations and uniforming
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glUniformMatrix4fv(lightProjectionLocInMain, 1, GL_FALSE, glm::value_ptr(lightProjection));
