@@ -21,7 +21,7 @@ void main()
 	float shadowBias = max(0.1f * (1.0f - dot(norm, directionalLightDir)), 0.005f);
 	bool isShadowed = closestDepth < currentDepth - shadowBias;
 
-	// PCF (idk why it won't work :<)
+	// PCF
 	float shadowing = 0.0f;
 	vec2 texelSize = 1.0f / textureSize(shadowMapTexture, 0);
 	for(int x = -2; x <= 1.0f; ++x)
@@ -53,8 +53,8 @@ void main()
 		float spec = pow(max(dot(eyeDir, reflectDir), 0.0f), 128.0f);
 		vec3 directionalLightSpecular = spec * lightColor * directionalLightSpecularIntensity;
 
-		vec3 phongLightingColor = (directionalLightAmbient + (1.0 - shadowing)  * (directionalLightDiffuse + directionalLightSpecular)) * fragColor;
-		//vec3 phongLightingColor = (directionalLightAmbient + directionalLightDiffuse + directionalLightSpecular) * fragColor;
+		vec3 phongLightingColor = (directionalLightAmbient + directionalLightDiffuse + directionalLightSpecular) * fragColor;
+		phongLightingColor = (1.0 - shadowing) * phongLightingColor;
 
 		FinalColor = vec4(phongLightingColor, 1.0f);
 	}
