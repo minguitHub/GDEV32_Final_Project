@@ -186,6 +186,39 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+	// SKYBOX
+	unsigned int skyboxTexture;
+	int skyboxImageWidth, skyboxImageHeight, nrChannels;
+	unsigned char* data;
+	std::string skybox_faces[6]
+	{
+		"top.jpg",
+		"bottom.jpg",
+		"left.jpg",
+		"right.jpg",
+		"front.jpg",
+		"back.jpg"
+	};
+
+	glGenTextures(1, &skyboxTexture);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
+	for (unsigned int i = 0; i <= 6; i++)
+	{
+		data = stbi_load(skybox_faces[i].c_str(), &skyboxImageWidth, &skyboxImageHeight, &nrChannels, 0);
+		glTexImage2D(
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+			0, GL_RGB, skyboxImageWidth, skyboxImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+		);
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	}
+
+
+	// SHADOWS
 	// generating framebuffer for depth map
 	unsigned int shadowMapFBO;
 	glGenFramebuffers(1, &shadowMapFBO);
