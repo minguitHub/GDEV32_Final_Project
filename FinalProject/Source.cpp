@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cmath>
 #include <math.h>
+#include <vector>
 
 #define STB_IMAGE_IMPLEMENTATION // turns .h file to .cpp file
 #include <stb_image.h>
@@ -150,6 +151,59 @@ int main()
 		planeVertices[5] = { -0.5f, 0.0f, -0.5f,	128, 128, 128,	0.0f, 1.0f, 0.0f };
 	}
 
+	Vertex skyboxVertices[36];
+	// data points
+	{
+							// positions
+		//back
+		skyboxVertices[0] = { -0.5f, -0.5f, -0.5f };
+		skyboxVertices[1] = { 0.5f, -0.5f, -0.5f };
+		skyboxVertices[2] = { 0.5f,  0.5f, -0.5f };
+		skyboxVertices[3] = { 0.5f,  0.5f, -0.5f };
+		skyboxVertices[4] = { -0.5f,  0.5f, -0.5f };
+		skyboxVertices[5] = { -0.5f, -0.5f, -0.5f };
+
+		//front
+		skyboxVertices[6] = { -0.5f, -0.5f,  0.5f };
+		skyboxVertices[7] = { 0.5f, -0.5f,  0.5f };
+		skyboxVertices[8] = { 0.5f,  0.5f,  0.5f };
+		skyboxVertices[9] = { 0.5f,  0.5f,  0.5f };
+		skyboxVertices[10] = { -0.5f,  0.5f,  0.5f };
+		skyboxVertices[11] = { -0.5f, -0.5f,  0.5f };
+
+		//left
+		skyboxVertices[12] = { -0.5f,  0.5f,  0.5f };
+		skyboxVertices[13] = { -0.5f,  0.5f, -0.5f };
+		skyboxVertices[14] = { -0.5f, -0.5f, -0.5f };
+		skyboxVertices[15] = { -0.5f, -0.5f, -0.5f };
+		skyboxVertices[16] = { -0.5f, -0.5f,  0.5f };
+		skyboxVertices[17] = { -0.5f,  0.5f,  0.5f };
+
+		//right
+		skyboxVertices[18] = { 0.5f,  0.5f,  0.5f };
+		skyboxVertices[19] = { 0.5f,  0.5f, -0.5f };
+		skyboxVertices[20] = { 0.5f, -0.5f, -0.5f };
+		skyboxVertices[21] = { 0.5f, -0.5f, -0.5f };
+		skyboxVertices[22] = { 0.5f, -0.5f,  0.5f };
+		skyboxVertices[23] = { 0.5f,  0.5f,  0.5f };
+
+		//bottom
+		skyboxVertices[24] = { -0.5f, -0.5f, -0.5f };
+		skyboxVertices[25] = { 0.5f, -0.5f, -0.5f };
+		skyboxVertices[26] = { 0.5f, -0.5f,  0.5f };
+		skyboxVertices[27] = { 0.5f, -0.5f,  0.5f };
+		skyboxVertices[28] = { -0.5f, -0.5f,  0.5f };
+		skyboxVertices[29] = { -0.5f, -0.5f, -0.5f };
+
+		//top
+		skyboxVertices[30] = { -0.5f,  0.5f, -0.5f };
+		skyboxVertices[31] = { 0.5f,  0.5f, -0.5f };
+		skyboxVertices[32] = { 0.5f,  0.5f,  0.5f };
+		skyboxVertices[33] = { 0.5f,  0.5f,  0.5f };
+		skyboxVertices[34] = { -0.5f,  0.5f,  0.5f };
+		skyboxVertices[35] = { -0.5f,  0.5f, -0.5f };
+	}
+
 	// creating cubeVAO, cubeVBO
 	unsigned int cubeVAO, cubeVBO;
 	glGenVertexArrays(1, &cubeVAO); // creating vertex array object
@@ -186,11 +240,29 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+	// creating skyboxVAO, skyboxVBO
+	unsigned int skyboxVAO, skyboxVBO;
+	glGenVertexArrays(1, &skyboxVAO); // creating vertex array object
+	glGenBuffers(1, &skyboxVBO); // creating vertex buffer object
+	glBindVertexArray(skyboxVAO); // VAO must be binded here before VBO
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVAO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+	// defining how OpenGL should interpret the data
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, x)); // position
+	// unbind planeVBO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
 	// SKYBOX
+	//stbi_set_flip_vertically_on_load(true); // images have (0,0) on the upper left by default
+
 	unsigned int skyboxTexture;
 	int skyboxImageWidth, skyboxImageHeight, nrChannels;
 	unsigned char* data;
-	std::string skybox_faces[6]
+	
+	//std::vector<std::string> skyboxFaces
+	std::string skyboxFaces[6]
 	{
 		"top.jpg",
 		"bottom.jpg",
@@ -202,21 +274,29 @@ int main()
 
 	glGenTextures(1, &skyboxTexture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
-	for (unsigned int i = 0; i <= 6; i++)
+	std::cout << sizeof(skyboxFaces) / sizeof(*skyboxFaces) << std::endl;
+	for (unsigned int i = 0; i < (sizeof(skyboxFaces)/sizeof(*skyboxFaces)); i++)
 	{
-		data = stbi_load(skybox_faces[i].c_str(), &skyboxImageWidth, &skyboxImageHeight, &nrChannels, 0);
-		glTexImage2D(
-			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-			0, GL_RGB, skyboxImageWidth, skyboxImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-		);
-
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		const char* imageName = skyboxFaces[i].c_str();
+		data = stbi_load(imageName, &skyboxImageWidth, &skyboxImageHeight, &nrChannels, 0);
+		if (data)
+		{
+			glTexImage2D(
+				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, //cubemap has 6 faces and can be incremented like enum 
+				0, GL_RGB, skyboxImageWidth, skyboxImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+			);
+		}
+		else
+		{
+			std::cout << "Cubemap failed to load." << std::endl;
+		}
+		stbi_image_free(data);
 	}
-
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	// SHADOWS
 	// generating framebuffer for depth map
