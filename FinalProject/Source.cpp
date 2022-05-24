@@ -89,52 +89,52 @@ int main()
 	{
 							// positions			// colors		// normals
 		//back
-		cubeVertices[0] = { -1.0f, -1.0f, -1.0f,	255, 0, 0,		0.0f, 0.0f, -1.0f };
-		cubeVertices[1] = { 1.0f, -1.0f, -1.0f,		255, 0, 0,		0.0f, 0.0f, -1.0f };
-		cubeVertices[2] = { 1.0f,  1.0f, -1.0f,		255, 0, 0,		0.0f, 0.0f, -1.0f };
-		cubeVertices[3] = { 1.0f,  1.0f, -1.0f,		255, 0, 0,		0.0f, 0.0f, -1.0f };
-		cubeVertices[4] = { -1.0f,  1.0f, -1.0f,	255, 0, 0,		0.0f, 0.0f, -1.0f };
-		cubeVertices[5] = { -1.0f, -1.0f, -1.0f,	255, 0, 0,		0.0f, 0.0f, -1.0f };
+		cubeVertices[0] = { -0.5f, -0.5f, -0.5f,	255, 0, 0,		0.0f, 0.0f, -1.0f };
+		cubeVertices[1] = { 0.5f, -0.5f, -0.5f,		255, 0, 0,		0.0f, 0.0f, -1.0f };
+		cubeVertices[2] = { 0.5f,  0.5f, -0.5f,		255, 0, 0,		0.0f, 0.0f, -1.0f };
+		cubeVertices[3] = { 0.5f,  0.5f, -0.5f,		255, 0, 0,		0.0f, 0.0f, -1.0f };
+		cubeVertices[4] = { -0.5f,  0.5f, -0.5f,	255, 0, 0,		0.0f, 0.0f, -1.0f };
+		cubeVertices[5] = { -0.5f, -0.5f, -0.5f,	255, 0, 0,		0.0f, 0.0f, -1.0f };
 
 		//front
-		cubeVertices[6] = { -1.0f, -1.0f,  1.0f,	0, 255, 0,		0.0f, 0.0f, 1.0f };
-		cubeVertices[7] = { 1.0f, -1.0f,  1.0f,		0, 255, 0,		0.0f, 0.0f, 1.0f };
-		cubeVertices[8] = { 1.0f,  1.0f,  1.0f,		0, 255, 0,		0.0f, 0.0f, 1.0f };
-		cubeVertices[9] = { 1.0f,  1.0f,  1.0f,		0, 255, 0,		0.0f, 0.0f, 1.0f };
-		cubeVertices[10] = { -1.0f,  1.0f,  1.0f,	0, 255, 0,		0.0f, 0.0f, 1.0f };
-		cubeVertices[11] = { -1.0f, -1.0f,  1.0f,	0, 255, 0,		0.0f, 0.0f, 1.0f };
+		cubeVertices[6] = { -0.5f, -0.5f,  0.5f,	0, 255, 0,		0.0f, 0.0f, 1.0f };
+		cubeVertices[7] = { 0.5f, -0.5f,  0.5f,		0, 255, 0,		0.0f, 0.0f, 1.0f };
+		cubeVertices[8] = { 0.5f,  0.5f,  0.5f,		0, 255, 0,		0.0f, 0.0f, 1.0f };
+		cubeVertices[9] = { 0.5f,  0.5f,  0.5f,		0, 255, 0,		0.0f, 0.0f, 1.0f };
+		cubeVertices[10] = { -0.5f,  0.5f,  0.5f,	0, 255, 0,		0.0f, 0.0f, 1.0f };
+		cubeVertices[11] = { -0.5f, -0.5f,  0.5f,	0, 255, 0,		0.0f, 0.0f, 1.0f };
 
 		//left
-		cubeVertices[12] = { -1.0f,  1.0f,  1.0f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
-		cubeVertices[13] = { -1.0f,  1.0f, -1.0f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
-		cubeVertices[14] = { -1.0f, -1.0f, -1.0f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
-		cubeVertices[15] = { -1.0f, -1.0f, -1.0f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
-		cubeVertices[16] = { -1.0f, -1.0f,  1.0f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
-		cubeVertices[17] = { -1.0f,  1.0f,  1.0f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
+		cubeVertices[12] = { -0.5f,  0.5f,  0.5f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
+		cubeVertices[13] = { -0.5f,  0.5f, -0.5f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
+		cubeVertices[14] = { -0.5f, -0.5f, -0.5f,	0, 0, 255,		-0.5f, 0.0f, 0.0f };
+		cubeVertices[15] = { -0.5f, -0.5f, -0.5f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
+		cubeVertices[16] = { -0.5f, -0.5f,  0.5f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
+		cubeVertices[17] = { -0.5f,  0.5f,  0.5f,	0, 0, 255,		-1.0f, 0.0f, 0.0f };
 
 		//right
-		cubeVertices[18] = { 1.0f,  1.0f,  1.0f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
-		cubeVertices[19] = { 1.0f,  1.0f, -1.0f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
-		cubeVertices[20] = { 1.0f, -1.0f, -1.0f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
-		cubeVertices[21] = { 1.0f, -1.0f, -1.0f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
-		cubeVertices[22] = { 1.0f, -1.0f,  1.0f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
-		cubeVertices[23] = { 1.0f,  1.0f,  1.0f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
+		cubeVertices[18] = { 0.5f,  0.5f,  0.5f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
+		cubeVertices[19] = { 0.5f,  0.5f, -0.5f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
+		cubeVertices[20] = { 0.5f, -0.5f, -0.5f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
+		cubeVertices[21] = { 0.5f, -0.5f, -0.5f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
+		cubeVertices[22] = { 0.5f, -0.5f,  0.5f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
+		cubeVertices[23] = { 0.5f,  0.5f,  0.5f,	255, 255, 0,	1.0f, 0.0f, 0.0f };
 
 		//bottom
-		cubeVertices[24] = { -1.0f, -1.0f, -1.0f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
-		cubeVertices[25] = { 1.0f, -1.0f, -1.0f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
-		cubeVertices[26] = { 1.0f, -1.0f,  1.0f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
-		cubeVertices[27] = { 1.0f, -1.0f,  1.0f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
-		cubeVertices[28] = { -1.0f, -1.0f,  1.0f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
-		cubeVertices[29] = { -1.0f, -1.0f, -1.0f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
+		cubeVertices[24] = { -0.5f, -0.5f, -0.5f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
+		cubeVertices[25] = { 0.5f, -0.5f, -0.5f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
+		cubeVertices[26] = { 0.5f, -0.5f,  0.5f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
+		cubeVertices[27] = { 0.5f, -0.5f,  0.5f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
+		cubeVertices[28] = { -0.5f, -0.5f,  0.5f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
+		cubeVertices[29] = { -0.5f, -0.5f, -0.5f,	0, 255, 255,	0.0f, -1.0f, 0.0f };
 
 		//top
-		cubeVertices[30] = { -1.0f,  1.0f, -1.0f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
-		cubeVertices[31] = { 1.0f,  1.0f, -1.0f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
-		cubeVertices[32] = { 1.0f,  1.0f,  1.0f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
-		cubeVertices[33] = { 1.0f,  1.0f,  1.0f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
-		cubeVertices[34] = { -1.0f,  1.0f,  1.0f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
-		cubeVertices[35] = { -1.0f,  1.0f, -1.0f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
+		cubeVertices[30] = { -0.5f,  0.5f, -0.5f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
+		cubeVertices[31] = { 0.5f,  0.5f, -0.5f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
+		cubeVertices[32] = { 0.5f,  0.5f,  0.5f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
+		cubeVertices[33] = { 0.5f,  0.5f,  0.5f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
+		cubeVertices[34] = { -0.5f,  0.5f,  0.5f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
+		cubeVertices[35] = { -0.5f,  0.5f, -0.5f,	255, 0, 255,	0.0f, 1.0f, 0.0f };
 	}
 
 	Vertex planeVertices[6];
@@ -142,12 +142,12 @@ int main()
 	{
 							// positions			// colors		// normals
 		//bottom
-		planeVertices[0] = { -1.0f, 0.0f, -1.0f,	128, 128, 128,	0.0f, 1.0f, 0.0f };
-		planeVertices[1] = { 1.0f, 0.0f, -1.0f,		128, 128, 128,	0.0f, 1.0f, 0.0f };
-		planeVertices[2] = { 1.0f, 0.0f,  1.0f,		128, 128, 128,	0.0f, 1.0f, 0.0f };
-		planeVertices[3] = { 1.0f, 0.0f,  1.0f,		128, 128, 128,	0.0f, 1.0f, 0.0f };
-		planeVertices[4] = { -1.0f, 0.0f,  1.0f,	128, 128, 128,	0.0f, 1.0f, 0.0f };
-		planeVertices[5] = { -1.0f, 0.0f, -1.0f,	128, 128, 128,	0.0f, 1.0f, 0.0f };
+		planeVertices[0] = { -0.5f, 0.0f, -0.5f,	128, 128, 128,	0.0f, 1.0f, 0.0f };
+		planeVertices[1] = { 0.5f, 0.0f, -0.5f,		128, 128, 128,	0.0f, 1.0f, 0.0f };
+		planeVertices[2] = { 0.5f, 0.0f,  0.5f,		128, 128, 128,	0.0f, 1.0f, 0.0f };
+		planeVertices[3] = { 0.5f, 0.0f,  0.5f,		128, 128, 128,	0.0f, 1.0f, 0.0f };
+		planeVertices[4] = { -0.5f, 0.0f,  0.5f,	128, 128, 128,	0.0f, 1.0f, 0.0f };
+		planeVertices[5] = { -0.5f, 0.0f, -0.5f,	128, 128, 128,	0.0f, 1.0f, 0.0f };
 	}
 
 	// creating cubeVAO, cubeVBO
@@ -295,7 +295,7 @@ int main()
 						glBindVertexArray(planeVAO); // start drawing planes
 						glm::mat4 model = glm::mat4(1.0f); // initialize identity matrix
 
-						model = glm::scale(model, glm::vec3(10.0f, 0.0f, 10.0f));
+						model = glm::scale(model, glm::vec3(20.0f, 0.0f, 20.0f));
 
 						glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -312,8 +312,8 @@ int main()
 						glBindVertexArray(cubeVAO); // start drawing cubes
 						model = glm::mat4(1.0f); // initialize identity matrix
 
-						model = glm::translate(model, glm::vec3(0.0f, 2.5f, -2.0f));
-						model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+						model = glm::translate(model, glm::vec3(0.0f, 2.0f, -2.0f));
+						model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
 
 						glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -325,7 +325,7 @@ int main()
 						model = glm::translate(model, glm::vec3(-0.25f, 0.25f, -0.5f));
 						model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 						model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-						model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+						model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
 
 						glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -334,7 +334,7 @@ int main()
 						// cube 3
 						model = glm::mat4(1.0f); // initialize identity matrix
 
-						model = glm::translate(model, glm::vec3(-6.0f, 1.0f, -6.0f));
+						model = glm::translate(model, glm::vec3(-4.5f, 0.5f, -4.5f));
 						model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 						glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -385,7 +385,7 @@ int main()
 		glBindVertexArray(planeVAO); // start drawing planes
 		model = glm::mat4(1.0f); // initialize identity matrix; definition moved up to shadow portion
 
-		model = glm::scale(model, glm::vec3(10.0f, 0.0f, 10.0f));
+		model = glm::scale(model, glm::vec3(20.0f, 0.0f, 20.0f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -402,8 +402,8 @@ int main()
 		glBindVertexArray(cubeVAO); // start drawing cubes
 		model = glm::mat4(1.0f); // initialize identity matrix
 
-		model = glm::translate(model, glm::vec3(0.0f, 2.5f, -2.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::translate(model, glm::vec3(0.0f, 2.0f, -2.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -415,7 +415,7 @@ int main()
 		model = glm::translate(model, glm::vec3(-0.25f, 0.25f, -0.5f));
 		model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+		model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -424,7 +424,7 @@ int main()
 		// cube 3
 		model = glm::mat4(1.0f); // initialize identity matrix
 
-		model = glm::translate(model, glm::vec3(-6.0f, 1.0f, -6.0f));
+		model = glm::translate(model, glm::vec3(-4.5f, 0.5f, -4.5f));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
