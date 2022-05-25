@@ -334,7 +334,7 @@ int main()
 	
 	// directional light uniforms
 		// directional light position
-		glm::vec3 directionalLightPos(5.0f, 8.0f, 2.0f);
+		glm::vec3 directionalLightPos(-4.5f, 8.0f, -5.5f);
 		int directionalLightPosLoc = glGetUniformLocation(ourShader.ID, "directionalLightPos");
 		glUniform3fv(directionalLightPosLoc, 1, glm::value_ptr(directionalLightPos));
 
@@ -424,7 +424,7 @@ int main()
 						// cube 2
 						model = glm::mat4(1.0f); // initialize identity matrix
 
-						model = glm::translate(model, glm::vec3(-0.25f, 0.25f, -0.5f));
+						model = glm::translate(model, glm::vec3(-3.0f, 0.25f, 1.0f));
 						model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 						model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 						model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
@@ -509,7 +509,7 @@ int main()
 		// cube 2
 		model = glm::mat4(1.0f); // initialize identity matrix
 
-		model = glm::translate(model, glm::vec3(-0.25f, 0.25f, -0.5f));
+		model = glm::translate(model, glm::vec3(-3.0f, 0.25f, 1.0f));
 		model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
