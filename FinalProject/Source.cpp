@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cmath>
 #include <math.h>
+#include <vector>
 
 #define STB_IMAGE_IMPLEMENTATION // turns .h file to .cpp file
 #include <stb_image.h>
@@ -83,6 +84,7 @@ int main()
 	// creating shader program
 	Shader ourShader("source.vsh", "source.fsh");
 	Shader shadowShader("shadowMapper.vsh", "shadowMapper.fsh");
+	Shader skyboxShader("skybox.vsh", "skybox.fsh");
 
 	Vertex cubeVertices[36];
 	// data points
@@ -150,6 +152,51 @@ int main()
 		planeVertices[5] = { -0.5f, 0.0f, -0.5f,	128, 128, 128,	0.0f, 1.0f, 0.0f };
 	}
 
+	float skyboxVertices[] = {
+		// positions          
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+
+		-0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+
+		-0.5f, -0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+
+		-0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f,
+
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f,  0.5f
+	};
+
 	// creating cubeVAO, cubeVBO
 	unsigned int cubeVAO, cubeVBO;
 	glGenVertexArrays(1, &cubeVAO); // creating vertex array object
@@ -186,6 +233,61 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+	// creating skyboxVAO, skyboxVBO
+	unsigned int skyboxVAO, skyboxVBO;
+	glGenVertexArrays(1, &skyboxVAO); // creating vertex array object
+	glGenBuffers(1, &skyboxVBO); // creating vertex buffer object
+	glBindVertexArray(skyboxVAO); // VAO must be binded here before VBO
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+	// defining how OpenGL should interpret the data
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0); // position
+	// unbind planeVBO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	// SKYBOX
+	unsigned int skyboxTexture;
+	int skyboxImageWidth, skyboxImageHeight, nrChannels;
+	
+	//std::vector<std::string> skyboxFaces
+	std::string skyboxFaces[6]
+	{
+		"right.jpg",
+		"left.jpg",
+		"top.jpg",
+		"bottom.jpg",
+		"front.jpg",
+		"back.jpg"
+	};
+
+	glGenTextures(1, &skyboxTexture);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
+	for (unsigned int i = 0; i < (sizeof(skyboxFaces)/sizeof(*skyboxFaces)); i++)
+	{
+		unsigned char* data = stbi_load(skyboxFaces[i].c_str(), &skyboxImageWidth, &skyboxImageHeight, &nrChannels, 0);
+		if (data)
+		{
+			glTexImage2D(
+				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, //cubemap has 6 faces and can be incremented like enum 
+				0, GL_RGB, skyboxImageWidth, skyboxImageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+			);
+		}
+		else
+		{
+			std::cout << "Cubemap failed to load." << std::endl;
+		}
+		stbi_image_free(data);
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+
+	// SHADOWS
 	// generating framebuffer for depth map
 	unsigned int shadowMapFBO;
 	glGenFramebuffers(1, &shadowMapFBO);
@@ -213,6 +315,10 @@ int main()
 	{
 		std::cout << "Error! Framebuffer not complete!" << std::endl;
 	}
+
+	// activate skybox shader
+	skyboxShader.use();
+	glUniform1i(glGetUniformLocation(skyboxShader.ID, "skyboxTex"), 0);
 
 	// activate main shader
 	ourShader.use();
@@ -260,10 +366,12 @@ int main()
 		// input
 		processInput(window);
 
-		// rendering 
-		glClearColor(0.098f, 0.098f, 0.4392f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		// rendering
+		glClear(GL_DEPTH_BUFFER_BIT);
+		
+		// -------------------
+		//		  SHADOWS
+		// -------------------
 		// activate shadow map shader
 		shadowShader.use();
 
@@ -284,14 +392,11 @@ int main()
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
-						// -------------------
-						//		  PLANE
-						// -------------------
-
+						
+						// PLANE
 						// creating transformations (MVP) for plane
 						// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
-						// plane
 						glBindVertexArray(planeVAO); // start drawing planes
 						glm::mat4 model = glm::mat4(1.0f); // initialize identity matrix
 
@@ -301,10 +406,7 @@ int main()
 
 						glDrawArrays(GL_TRIANGLES, 0, 6);
 
-						// -------------------
-						//		  CUBE
-						// -------------------
-
+						// CUBE
 						// creating transformations (MVP) for cube
 						// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
@@ -341,11 +443,14 @@ int main()
 
 						glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
+		// -------------------
+		//	  MAIN DRAWING
+		// -------------------
 
 		// main render
 		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-		glClearColor(0.098f, 0.098f, 0.4392f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clears the screen using the color that was set in previous line 
+		glClear(GL_DEPTH_BUFFER_BIT); // clears the screen using the color that was set in previous line 
 
 		// activate main shader
 		ourShader.use();
@@ -358,7 +463,7 @@ int main()
 		int lightViewLocInMain = glGetUniformLocation(ourShader.ID, "lightView"); // for updating the lightView in main shader
 
 		// main transformations and uniforming
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glUniformMatrix4fv(lightProjectionLocInMain, 1, GL_FALSE, glm::value_ptr(lightProjection));
@@ -374,14 +479,9 @@ int main()
 		GLint shadowMapTextureLoc = glGetUniformLocation(ourShader.ID, "shadowMapTexture");
 		glUniform1i(shadowMapTextureLoc, 0);
 
-		// -------------------
-		//		  PLANE
-		// -------------------
-
+		// PLANE
 		// creating transformations (MVP) for plane
 		// general pattern: intialize -> MVP -> glUniformMatrix -> draw
-
-		// plane
 		glBindVertexArray(planeVAO); // start drawing planes
 		model = glm::mat4(1.0f); // initialize identity matrix; definition moved up to shadow portion
 
@@ -391,10 +491,7 @@ int main()
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		// -------------------
-		//		  CUBE
-		// -------------------
-
+		// CUBE
 		// creating transformations (MVP) for cube
 		// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
@@ -431,6 +528,31 @@ int main()
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
+		// -------------------
+		//		 SKYBOX			// drawn last for optimization
+		// -------------------
+		// activate skybox shader
+		glDepthFunc(GL_LEQUAL);
+		skyboxShader.use();
+
+		// skybox uniform locations and drawing
+		int skyboxProjectionLoc = glGetUniformLocation(skyboxShader.ID, "skyboxProjection");
+		glm::mat4 skyboxProjection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
+		glUniformMatrix4fv(skyboxProjectionLoc, 1, GL_FALSE, glm::value_ptr(skyboxProjection));
+
+		int skyboxViewLoc = glGetUniformLocation(skyboxShader.ID, "skyboxView");
+		glm::mat4 skyboxView = glm::mat4(glm::mat3(glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp)));
+		glUniformMatrix4fv(skyboxViewLoc, 1, GL_FALSE, glm::value_ptr(skyboxView));
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
+		glBindVertexArray(skyboxVAO);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+
+		glDepthFunc(GL_LESS);
+
 		// check and call events and swap the buffers
 		glfwPollEvents();
 		glfwSwapBuffers(window);
@@ -441,6 +563,8 @@ int main()
 	glDeleteBuffers(1, &cubeVBO);
 	glDeleteVertexArrays(1, &planeVAO);
 	glDeleteBuffers(1, &planeVBO);
+	glDeleteVertexArrays(1, &skyboxVAO);
+	glDeleteBuffers(1, &skyboxVBO);
 
 	glfwTerminate();
 	return 0;
