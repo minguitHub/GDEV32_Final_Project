@@ -1,10 +1,10 @@
 ﻿  Source.cpp
 C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\shader.h(99,55): warning C4244: 'argument': conversion from 'float' to 'GLint', possible loss of data
 C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(360,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(613,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(614,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(618,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(619,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(620,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(621,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(605,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(606,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(610,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(611,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(612,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\FinalProject\Source.cpp(613,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   FinalProject.vcxproj -> C:\Users\Syl\Documents\AASylvane\GDEV 32\FinalProject\x64\Debug\FinalProject.exe

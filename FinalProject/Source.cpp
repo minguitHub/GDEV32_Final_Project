@@ -154,47 +154,47 @@ int main()
 
 	float skyboxVertices[] = {
 		// positions          
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
 
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
 
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
 
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
 
-		-1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f, -0.5f,
+		 0.5f,  0.5f,  0.5f,
+		 0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f,  0.5f,
+		-0.5f,  0.5f, -0.5f,
 
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f
+		-0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f, -0.5f,
+		 0.5f, -0.5f, -0.5f,
+		-0.5f, -0.5f,  0.5f,
+		 0.5f, -0.5f,  0.5f
 	};
 
 	// creating cubeVAO, cubeVBO
@@ -375,7 +375,7 @@ int main()
 
 		// skybox uniform locations and drawing
 		int skyboxProjectionLoc = glGetUniformLocation(skyboxShader.ID, "skyboxProjection");
-		glm::mat4 skyboxProjection = glm::perspective(glm::radians(90.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
+		glm::mat4 skyboxProjection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
 		glUniformMatrix4fv(skyboxProjectionLoc, 1, GL_FALSE, glm::value_ptr(skyboxProjection));
 
 		int skyboxViewLoc = glGetUniformLocation(skyboxShader.ID, "skyboxView");
@@ -390,172 +390,171 @@ int main()
 		
 		glDepthMask(GL_TRUE);
 		
-		//// activate shadow map shader
-		//shadowShader.use();
+		// activate shadow map shader
+		shadowShader.use();
 
-		//// uniform locations
-		//// projection from light pov for shadow map
-		//int lightProjectionLoc = glGetUniformLocation(shadowShader.ID, "lightProjection");
-		//int lightModelLoc = glGetUniformLocation(shadowShader.ID, "lightModel");
-		//int lightViewLoc = glGetUniformLocation(shadowShader.ID, "lightView");
+		// uniform locations
+		// projection from light pov for shadow map
+		int lightProjectionLoc = glGetUniformLocation(shadowShader.ID, "lightProjection");
+		int lightModelLoc = glGetUniformLocation(shadowShader.ID, "lightModel");
+		int lightViewLoc = glGetUniformLocation(shadowShader.ID, "lightView");
 
-		//// lightmvp transformation for the shadow map
-		//glm::mat4 lightProjection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, 1.0f, 30.f); // left, right, up, down, near, far
-		//glUniformMatrix4fv(lightProjectionLoc, 1, GL_FALSE, glm::value_ptr(lightProjection));
+		// lightmvp transformation for the shadow map
+		glm::mat4 lightProjection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, 1.0f, 30.f); // left, right, up, down, near, far
+		glUniformMatrix4fv(lightProjectionLoc, 1, GL_FALSE, glm::value_ptr(lightProjection));
 
-		//glm::mat4 lightView = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		//lightView = glm::lookAt(directionalLightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.1f, 0.0f));
-		//glUniformMatrix4fv(lightViewLoc, 1, GL_FALSE, glm::value_ptr(lightView));
+		glm::mat4 lightView = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+		lightView = glm::lookAt(directionalLightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.1f, 0.0f));
+		glUniformMatrix4fv(lightViewLoc, 1, GL_FALSE, glm::value_ptr(lightView));
 
-		//glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		//glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
-		//glClear(GL_DEPTH_BUFFER_BIT);
-		//				// -------------------
-		//				//		  PLANE
-		//				// -------------------
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
+		glClear(GL_DEPTH_BUFFER_BIT);
+						// -------------------
+						//		  PLANE
+						// -------------------
 
-		//				// creating transformations (MVP) for plane
-		//				// general pattern: intialize -> MVP -> glUniformMatrix -> draw
+						// creating transformations (MVP) for plane
+						// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
-		//				// plane
-		//				glBindVertexArray(planeVAO); // start drawing planes
-		//				glm::mat4 model = glm::mat4(1.0f); // initialize identity matrix
+						// plane
+						glBindVertexArray(planeVAO); // start drawing planes
+						glm::mat4 model = glm::mat4(1.0f); // initialize identity matrix
 
-		//				model = glm::scale(model, glm::vec3(20.0f, 0.0f, 20.0f));
+						model = glm::scale(model, glm::vec3(20.0f, 0.0f, 20.0f));
 
-		//				glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
+						glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		//				glDrawArrays(GL_TRIANGLES, 0, 6);
+						glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		//				// -------------------
-		//				//		  CUBE
-		//				// -------------------
+						// -------------------
+						//		  CUBE
+						// -------------------
 
-		//				// creating transformations (MVP) for cube
-		//				// general pattern: intialize -> MVP -> glUniformMatrix -> draw
+						// creating transformations (MVP) for cube
+						// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
-		//				// cube 1
-		//				glBindVertexArray(cubeVAO); // start drawing cubes
-		//				model = glm::mat4(1.0f); // initialize identity matrix
+						// cube 1
+						glBindVertexArray(cubeVAO); // start drawing cubes
+						model = glm::mat4(1.0f); // initialize identity matrix
 
-		//				model = glm::translate(model, glm::vec3(0.0f, 2.0f, -2.0f));
-		//				model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+						model = glm::translate(model, glm::vec3(0.0f, 2.0f, -2.0f));
+						model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
 
-		//				glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
+						glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		//				glDrawArrays(GL_TRIANGLES, 0, 36);
+						glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//				// cube 2
-		//				model = glm::mat4(1.0f); // initialize identity matrix
+						// cube 2
+						model = glm::mat4(1.0f); // initialize identity matrix
 
-		//				model = glm::translate(model, glm::vec3(-0.25f, 0.25f, -0.5f));
-		//				model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//				model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//				model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
+						model = glm::translate(model, glm::vec3(-0.25f, 0.25f, -0.5f));
+						model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+						model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+						model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
 
-		//				glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
+						glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		//				glDrawArrays(GL_TRIANGLES, 0, 36);
+						glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//				// cube 3
-		//				model = glm::mat4(1.0f); // initialize identity matrix
+						// cube 3
+						model = glm::mat4(1.0f); // initialize identity matrix
 
-		//				model = glm::translate(model, glm::vec3(-4.5f, 0.5f, -4.5f));
-		//				model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+						model = glm::translate(model, glm::vec3(-4.5f, 0.5f, -4.5f));
+						model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-		//				glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
+						glUniformMatrix4fv(lightModelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		//				glDrawArrays(GL_TRIANGLES, 0, 36);
-		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+						glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		//// main render
-		//glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-		//glClearColor(0.098f, 0.098f, 0.4392f, 1.0f);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clears the screen using the color that was set in previous line 
+		// main render
+		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+		glClear(GL_DEPTH_BUFFER_BIT); // clears the screen using the color that was set in previous line 
 
-		//// activate main shader
-		//ourShader.use();
+		// activate main shader
+		ourShader.use();
 
-		//// main transformation uniform location
-		//int projectionLoc = glGetUniformLocation(ourShader.ID, "projection");
-		//int modelLoc = glGetUniformLocation(ourShader.ID, "model");
-		//int viewLoc = glGetUniformLocation(ourShader.ID, "view");
-		//int lightProjectionLocInMain = glGetUniformLocation(ourShader.ID, "lightProjection"); // for updating the lightProj in main shader
-		//int lightViewLocInMain = glGetUniformLocation(ourShader.ID, "lightView"); // for updating the lightView in main shader
+		// main transformation uniform location
+		int projectionLoc = glGetUniformLocation(ourShader.ID, "projection");
+		int modelLoc = glGetUniformLocation(ourShader.ID, "model");
+		int viewLoc = glGetUniformLocation(ourShader.ID, "view");
+		int lightProjectionLocInMain = glGetUniformLocation(ourShader.ID, "lightProjection"); // for updating the lightProj in main shader
+		int lightViewLocInMain = glGetUniformLocation(ourShader.ID, "lightView"); // for updating the lightView in main shader
 
-		//// main transformations and uniforming
-		//glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
-		//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		// main transformations and uniforming
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
+		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-		//glUniformMatrix4fv(lightProjectionLocInMain, 1, GL_FALSE, glm::value_ptr(lightProjection));
+		glUniformMatrix4fv(lightProjectionLocInMain, 1, GL_FALSE, glm::value_ptr(lightProjection));
 
-		//glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		//view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-		//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
-		//glUniformMatrix4fv(lightViewLocInMain, 1, GL_FALSE, glm::value_ptr(lightView));
+		glUniformMatrix4fv(lightViewLocInMain, 1, GL_FALSE, glm::value_ptr(lightView));
 
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, shadowMap);
-		//GLint shadowMapTextureLoc = glGetUniformLocation(ourShader.ID, "shadowMapTexture");
-		//glUniform1i(shadowMapTextureLoc, 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, shadowMap);
+		GLint shadowMapTextureLoc = glGetUniformLocation(ourShader.ID, "shadowMapTexture");
+		glUniform1i(shadowMapTextureLoc, 0);
 
-		//// -------------------
-		////		  PLANE
-		//// -------------------
+		// -------------------
+		//		  PLANE
+		// -------------------
 
-		//// creating transformations (MVP) for plane
-		//// general pattern: intialize -> MVP -> glUniformMatrix -> draw
+		// creating transformations (MVP) for plane
+		// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
-		//// plane
-		//glBindVertexArray(planeVAO); // start drawing planes
-		//model = glm::mat4(1.0f); // initialize identity matrix; definition moved up to shadow portion
+		// plane
+		glBindVertexArray(planeVAO); // start drawing planes
+		model = glm::mat4(1.0f); // initialize identity matrix; definition moved up to shadow portion
 
-		//model = glm::scale(model, glm::vec3(20.0f, 0.0f, 20.0f));
+		model = glm::scale(model, glm::vec3(20.0f, 0.0f, 20.0f));
 
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		//// -------------------
-		////		  CUBE
-		//// -------------------
+		// -------------------
+		//		  CUBE
+		// -------------------
 
-		//// creating transformations (MVP) for cube
-		//// general pattern: intialize -> MVP -> glUniformMatrix -> draw
+		// creating transformations (MVP) for cube
+		// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
-		//// cube 1
-		//glBindVertexArray(cubeVAO); // start drawing cubes
-		//model = glm::mat4(1.0f); // initialize identity matrix
+		// cube 1
+		glBindVertexArray(cubeVAO); // start drawing cubes
+		model = glm::mat4(1.0f); // initialize identity matrix
 
-		//model = glm::translate(model, glm::vec3(0.0f, 2.0f, -2.0f));
-		//model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		model = glm::translate(model, glm::vec3(0.0f, 2.0f, -2.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
 
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//// cube 2
-		//model = glm::mat4(1.0f); // initialize identity matrix
+		// cube 2
+		model = glm::mat4(1.0f); // initialize identity matrix
 
-		//model = glm::translate(model, glm::vec3(-0.25f, 0.25f, -0.5f));
-		//model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
+		model = glm::translate(model, glm::vec3(-0.25f, 0.25f, -0.5f));
+		model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.50f, 0.50f, 0.50f));
 
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//// cube 3
-		//model = glm::mat4(1.0f); // initialize identity matrix
+		// cube 3
+		model = glm::mat4(1.0f); // initialize identity matrix
 
-		//model = glm::translate(model, glm::vec3(-4.5f, 0.5f, -4.5f));
-		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-4.5f, 0.5f, -4.5f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// check and call events and swap the buffers
 		glfwPollEvents();
