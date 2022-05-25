@@ -369,27 +369,9 @@ int main()
 		// rendering
 		glClear(GL_DEPTH_BUFFER_BIT);
 		
-		// activate skybox shader
-		glDepthMask(GL_FALSE);
-		skyboxShader.use();
-
-		// skybox uniform locations and drawing
-		int skyboxProjectionLoc = glGetUniformLocation(skyboxShader.ID, "skyboxProjection");
-		glm::mat4 skyboxProjection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
-		glUniformMatrix4fv(skyboxProjectionLoc, 1, GL_FALSE, glm::value_ptr(skyboxProjection));
-
-		int skyboxViewLoc = glGetUniformLocation(skyboxShader.ID, "skyboxView");
-		glm::mat4 skyboxView = glm::mat4(glm::mat3(glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp)));
-		glUniformMatrix4fv(skyboxViewLoc, 1, GL_FALSE, glm::value_ptr(skyboxView));
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
-		glBindVertexArray(skyboxVAO);
-
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		
-		glDepthMask(GL_TRUE);
-		
+		// -------------------
+		//		  SHADOWS
+		// -------------------
 		// activate shadow map shader
 		shadowShader.use();
 
@@ -410,14 +392,11 @@ int main()
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
-						// -------------------
-						//		  PLANE
-						// -------------------
-
+						
+						// PLANE
 						// creating transformations (MVP) for plane
 						// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
-						// plane
 						glBindVertexArray(planeVAO); // start drawing planes
 						glm::mat4 model = glm::mat4(1.0f); // initialize identity matrix
 
@@ -427,10 +406,7 @@ int main()
 
 						glDrawArrays(GL_TRIANGLES, 0, 6);
 
-						// -------------------
-						//		  CUBE
-						// -------------------
-
+						// CUBE
 						// creating transformations (MVP) for cube
 						// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
@@ -467,6 +443,10 @@ int main()
 
 						glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
+		// -------------------
+		//	  MAIN DRAWING
+		// -------------------
 
 		// main render
 		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
@@ -499,14 +479,9 @@ int main()
 		GLint shadowMapTextureLoc = glGetUniformLocation(ourShader.ID, "shadowMapTexture");
 		glUniform1i(shadowMapTextureLoc, 0);
 
-		// -------------------
-		//		  PLANE
-		// -------------------
-
+		// PLANE
 		// creating transformations (MVP) for plane
 		// general pattern: intialize -> MVP -> glUniformMatrix -> draw
-
-		// plane
 		glBindVertexArray(planeVAO); // start drawing planes
 		model = glm::mat4(1.0f); // initialize identity matrix; definition moved up to shadow portion
 
@@ -516,10 +491,7 @@ int main()
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		// -------------------
-		//		  CUBE
-		// -------------------
-
+		// CUBE
 		// creating transformations (MVP) for cube
 		// general pattern: intialize -> MVP -> glUniformMatrix -> draw
 
@@ -555,6 +527,31 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// -------------------
+		//		 SKYBOX			// drawn last for optimization
+		// -------------------
+		// activate skybox shader
+		glDepthFunc(GL_LEQUAL);
+		skyboxShader.use();
+
+		// skybox uniform locations and drawing
+		int skyboxProjectionLoc = glGetUniformLocation(skyboxShader.ID, "skyboxProjection");
+		glm::mat4 skyboxProjection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
+		glUniformMatrix4fv(skyboxProjectionLoc, 1, GL_FALSE, glm::value_ptr(skyboxProjection));
+
+		int skyboxViewLoc = glGetUniformLocation(skyboxShader.ID, "skyboxView");
+		glm::mat4 skyboxView = glm::mat4(glm::mat3(glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp)));
+		glUniformMatrix4fv(skyboxViewLoc, 1, GL_FALSE, glm::value_ptr(skyboxView));
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
+		glBindVertexArray(skyboxVAO);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+
+		glDepthFunc(GL_LESS);
 
 		// check and call events and swap the buffers
 		glfwPollEvents();

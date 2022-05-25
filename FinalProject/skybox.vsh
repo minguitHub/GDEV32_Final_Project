@@ -8,5 +8,6 @@ uniform mat4 skyboxProjection, skyboxView;
 void main()
 {
 	TexCoords = aPos;
-	gl_Position = skyboxProjection * skyboxView * vec4(aPos, 1.0);
+	vec4 tempPos = skyboxProjection * skyboxView * vec4(aPos, 1.0);
+	gl_Position = tempPos.xyww;
 }
