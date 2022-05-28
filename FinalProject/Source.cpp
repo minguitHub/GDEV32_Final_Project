@@ -331,10 +331,51 @@ int main()
 		int lightColorLoc = glGetUniformLocation(ourShader.ID, "lightColor");
 		glUniform3fv(lightColorLoc, 1, glm::value_ptr(lightColor));
 
-	
+	// point light uniforms
+		// point light position
+		glm::vec3 pointLightPos(4.0f, 4.0f, 2.0f);
+		int pointLightPosLoc = glGetUniformLocation(ourShader.ID, "pointLightPos");
+		glUniform3fv(pointLightPosLoc, 1, glm::value_ptr(pointLightPos));
+
+		// point light ambient intensity
+		glm::vec3 pointLightAmbientIntensity(0.2f, 0.2f, 0.2f);
+		int pointLightAmbientIntensityLoc = glGetUniformLocation(ourShader.ID, "pointLightAmbientIntensity");
+		glUniform3fv(pointLightAmbientIntensityLoc, 1, glm::value_ptr(pointLightAmbientIntensity));
+
+		// point light diffuse intensity
+		glm::vec3 pointLightDiffuseIntensity(1.0f, 1.0f, 1.0f);
+		int pointLightDiffuseIntensityLoc = glGetUniformLocation(ourShader.ID, "pointLightDiffuseIntensity");
+		glUniform3fv(pointLightDiffuseIntensityLoc, 1, glm::value_ptr(pointLightDiffuseIntensity));
+
+		// point light specular intensity
+		glm::vec3 pointLightSpecularIntensity(1.0f, 1.0f, 1.0f);
+		int pointLightSpecularIntensityLoc = glGetUniformLocation(ourShader.ID, "pointLightDiffuseIntensity");
+		glUniform3fv(pointLightSpecularIntensityLoc, 1, glm::value_ptr(pointLightSpecularIntensity));
+
+		// attenuation values
+			// constant
+			float pointLightConstant = 1.0f;
+			int pointLightConstantLoc = glGetUniformLocation(ourShader.ID, "pointLightConstant");
+			glUniform1f(pointLightConstantLoc, pointLightConstant);
+
+			// linear
+			float pointLightLinear = 0.7f;
+			int pointLightLinearLoc = glGetUniformLocation(ourShader.ID, "pointLightLinear");
+			glUniform1f(pointLightLinearLoc, pointLightLinear);
+
+			// quadratic
+			float pointLightQuadratic = 1.8f;
+			int pointLightQuadraticLoc = glGetUniformLocation(ourShader.ID, "pointLightQuadratic");
+			glUniform1f(pointLightQuadraticLoc, pointLightQuadratic);
+
+			// distance
+			float pointLightDistance = 7.0f;
+			int pointLightDistanceLoc = glGetUniformLocation(ourShader.ID, "pointLightDistance");
+			glUniform1f(pointLightDistanceLoc, pointLightDistance);
+
 	// directional light uniforms
 		// directional light position
-		glm::vec3 directionalLightPos(-4.5f, 8.0f, -5.5f);
+		glm::vec3 directionalLightPos(-5.5f, 2.0f, -6.5f);
 		int directionalLightPosLoc = glGetUniformLocation(ourShader.ID, "directionalLightPos");
 		glUniform3fv(directionalLightPosLoc, 1, glm::value_ptr(directionalLightPos));
 
@@ -455,6 +496,10 @@ int main()
 		// activate main shader
 		ourShader.use();
 
+		// get time part
+		int sourceTimeLoc = glGetUniformLocation(ourShader.ID, "time");
+		glUniform1f(sourceTimeLoc, glm::sin(glfwGetTime()));
+
 		// main transformation uniform location
 		int projectionLoc = glGetUniformLocation(ourShader.ID, "projection");
 		int modelLoc = glGetUniformLocation(ourShader.ID, "model");
@@ -535,6 +580,11 @@ int main()
 		glDepthFunc(GL_LEQUAL);
 		skyboxShader.use();
 
+		// get time part
+		int skyboxTimeLoc = glGetUniformLocation(skyboxShader.ID, "time");
+		glUniform1f(skyboxTimeLoc, glm::sin(glfwGetTime()));
+
+
 		// skybox uniform locations and drawing
 		int skyboxProjectionLoc = glGetUniformLocation(skyboxShader.ID, "skyboxProjection");
 		glm::mat4 skyboxProjection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 500.0f);
@@ -582,7 +632,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // for input control in glfw
 void processInput(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
 
 	const float cameraSpeed = 3 * deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) cameraPos += cameraSpeed * cameraFront;

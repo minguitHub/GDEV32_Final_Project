@@ -5,9 +5,13 @@ in vec4 fragPosLightPOV;
 
 out vec4 FinalColor;
 
-uniform vec3 lightColor, directionalLightPos, directionalLightAmbientIntensity, directionalLightDiffuseIntensity, directionalLightSpecularIntensity;
+uniform vec3 lightColor;
+uniform vec3 pointLightPos, pointLightAmbientIntensity, pointLightDiffuseIntensity, pointLightSpecularIntensity;
+uniform float pointLightConstant, pointLightLinear, pointLightQuadratic, pointLightDistance;
+uniform vec3 directionalLightPos, directionalLightAmbientIntensity, directionalLightDiffuseIntensity, directionalLightSpecularIntensity;
 uniform vec3 eyePos;
 uniform sampler2D shadowMapTexture;
+uniform float time;
 
 void main()
 {
@@ -18,7 +22,7 @@ void main()
 	float currentDepth = fragLightNDC.z;
 	vec3 norm = normalize(fragNorm);
 	vec3 directionalLightDir = normalize(directionalLightPos - fragPos);
-	float shadowBias = max(0.1f * (1.0f - dot(norm, directionalLightDir)), 0.005f);
+	float shadowBias = max(0.1f * (1.0f - dot(norm, directionalLightDir)), 0.0075f);
 	bool isShadowed = closestDepth < currentDepth - shadowBias;
 
 	// PCF
@@ -38,22 +42,47 @@ void main()
 
 	if (!isShadowed)
 	{
+		vec3 directionalChangingLightColor = lightColor * abs(time);
+		vec3 pointLightChangingLightColor = lightColor * (1 - abs(time));
+
+		// point light
 		// ambient lighting
-		vec3 directionalLightAmbient = lightColor * directionalLightAmbientIntensity;
+			vec3 pointLightAmbient = pointLightChangingLightColor * pointLightAmbientIntensity;
 
-		// diffuse lighting
-		// vec3 norm = normalize(fragNorm); // moved to shadow calculations
-		// vec3 directionalLightDir = normalize(directionalLightPos - fragPos); // moved to shadow calculations
-		float diff = max(dot(norm, directionalLightDir), 0.0);
-		vec3 directionalLightDiffuse = diff * lightColor * directionalLightDiffuseIntensity;
+			// diffuse lighting
+			vec3 pointNorm = normalize(fragNorm);
+			vec3 pointLightDir = normalize(pointLightPos - fragPos);
+			float pointLightDiff = max(dot(pointNorm, pointLightDir), 0.0);
+			vec3 pointLightDiffuse = pointLightDiff * pointLightChangingLightColor * pointLightDiffuseIntensity;
 
-		// specular lighting
-		vec3 eyeDir = normalize(eyePos - fragPos);
-		vec3 reflectDir = reflect(-directionalLightDir, norm);
-		float spec = pow(max(dot(eyeDir, reflectDir), 0.0f), 128.0f);
-		vec3 directionalLightSpecular = spec * lightColor * directionalLightSpecularIntensity;
+			// specular lighting
+			vec3 pointEyeDir = normalize(eyePos - fragPos);
+			vec3 pointLightReflectDir = reflect(-pointLightDir, norm);
+			float pointLightSpec = pow(max(dot(pointEyeDir, pointLightReflectDir), 0.0f), 128.0f);
+			vec3 pointLightSpecular = 1.0f * pointLightSpec * pointLightChangingLightColor * pointLightSpecularIntensity;
 
-		vec3 phongLightingColor = (directionalLightAmbient + directionalLightDiffuse + directionalLightSpecular) * fragColor;
+			// attenuation
+			float pointLightAttenuation =  1 / (pointLightConstant + (pointLightLinear * pointLightDistance) + (pointLightQuadratic * pointLightDistance * pointLightDistance));
+
+		// directional light
+			// ambient lighting
+			vec3 directionalLightAmbient = directionalChangingLightColor * directionalLightAmbientIntensity;
+
+			// diffuse lighting
+			vec3 directionalNorm = normalize(fragNorm); 
+			vec3 directionalLightDir = normalize(directionalLightPos - fragPos);
+			float directionalDiff = max(dot(directionalNorm, directionalLightDir), 0.0);
+			vec3 directionalLightDiffuse = directionalDiff * directionalChangingLightColor * directionalLightDiffuseIntensity;
+
+			// specular lighting
+			vec3 directionalEyeDir = normalize(eyePos - fragPos);
+			vec3 directionalReflectDir = reflect(-directionalLightDir, directionalNorm);
+			float directionalSpec = pow(max(dot(directionalEyeDir, directionalReflectDir), 0.0f), 128.0f);
+			vec3 directionalLightSpecular = directionalSpec * directionalChangingLightColor * directionalLightSpecularIntensity;
+
+		vec3 pointLightPhongLightingColor = (pointLightAmbient + pointLightDiffuse + pointLightSpecular);
+		vec3 directionalPhongLightingColor = directionalLightAmbient + directionalLightDiffuse + directionalLightSpecular;
+		vec3 phongLightingColor = (pointLightPhongLightingColor + directionalPhongLightingColor) * fragColor;
 		phongLightingColor = (1.0 - shadowing) * phongLightingColor;
 
 		FinalColor = vec4(phongLightingColor, 1.0f);
